@@ -1,22 +1,21 @@
-import { Card, CardContent, CardFooter } from "~/components/ui/card";
-import type { Route } from "./+types/home";
-import { useEffect, useState } from "react";
 import type { Message } from "~/models/message";
+import type { DailyMessages } from "~/models/daily-message";
+import { Card, CardContent, CardFooter } from "~/components/ui/card";
+import { useEffect, useState } from "react";
 import { useFilePreviewer } from "~/components/providers/file-previewer";
 import PasswordDialog from "~/components/password-dialog";
 import ImagePreviews from "~/components/image-previews";
 import ChatboxForm from "~/components/chatbox-form";
-import type { DailyMessages } from "~/models/daily-message";
 import DailyChatSection from "~/components/daily-chat-section";
 
-export function meta({ }: Route.MetaArgs) {
+export function meta() {
   return [
     { title: "Secret Messager" },
     { name: "description", content: "Welcome to Secret Messager!" },
   ];
 }
 
-export default function Home({ }: Route.ComponentProps) {
+export default function Home() {
 
   const { clearFiles } = useFilePreviewer();
 
@@ -76,7 +75,7 @@ export default function Home({ }: Route.ComponentProps) {
   }, [msgs]);
 
   return (
-    <main className="flex justify-center items-center bg-muted py-12 w-full min-h-[100vh]">
+    <main className="flex justify-center items-center bg-muted py-4 w-full min-h-[100vh]">
 
       <PasswordDialog sender={sender} err={err} dialogOnSubmit={dialogOnSubmit} />
 

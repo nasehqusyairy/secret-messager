@@ -1,7 +1,19 @@
 import Markdown from "markdown-to-jsx"
 import { useEffect, useRef, useState } from "react"
 import type { Message } from "~/models/message"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "~/components/ui/alert-dialog"
 import hljs from 'highlight.js';
+import { Button } from "./ui/button";
 
 type BubbleProps = {
     message: Message
@@ -46,15 +58,34 @@ function SyntaxHighlightedCode(props: SyntaxHighlightedCodeProps) {
     );
 }
 
+function ImageDialog(props: React.ImgHTMLAttributes<HTMLImageElement>) {
+    return (
+        <AlertDialog>
+            <AlertDialogTrigger>
+                <img {...props} />
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+                <AlertDialogDescription>
+                    <img {...props} />
+                </AlertDialogDescription>
+                <AlertDialogFooter>
+                    <AlertDialogCancel className="cursor-pointer">Close</AlertDialogCancel>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
+    )
+}
+
 export default ({ message, direction = "right" }: BubbleProps) => {
     return (
         <div className={`relative flex ${direction === 'right' ? 'justify-end' : ''} mb-4 message`}>
             <div className={`top-0 ${direction === 'right' ? '-right-2' : '-left-2'} absolute border-r-8 border-r-transparent border-b-8 ${direction === 'right' ? 'border-b-primary' : 'border-b-secondary'} border-l-8 border-l-transparent w-0 h-0 ${direction === 'right' ? '-rotate-45' : 'rotate-45'}`} />
-            <div className={`flex flex-wrap justify-end items-end gap-2 ${direction === 'right' ? 'bg-primary' : 'bg-secondary'} p-2 rounded-lg max-w-8/12 ${direction === 'right' ? 'text-primary-foreground' : 'text-secondary-foreground'}`}>
+            <div className={`flex flex-wrap justify-end items-end gap-2 ${direction === 'right' ? 'bg-primary' : 'bg-secondary'} p-2 rounded-lg lg:max-w-8/12 ${direction === 'right' ? 'text-primary-foreground' : 'text-secondary-foreground'}`}>
                 {/* <div className="mb-2 font-bold text-xs uppercase">{sender}</div> */}
                 <Markdown options={{
                     overrides: {
                         code: SyntaxHighlightedCode,
+                        img: ImageDialog
                     },
                 }} className="text-sm break-words hyphens-auto">{message.msg}</Markdown>
                 <div className="flex justify-end shrink-0">
